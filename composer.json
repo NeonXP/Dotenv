@@ -1,0 +1,21 @@
+{
+    "name": "neonxp/dotenv",
+    "description": "Library to load .env files",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Kiryukhin",
+            "email": "alexander@kiryukhin.su"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "NeonXP\\Dotenv\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    }
+}
