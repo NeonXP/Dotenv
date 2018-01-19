@@ -1,7 +1,7 @@
 # Dotenv
 
 [![Build Status](https://travis-ci.org/NeonXP/Dotenv.svg?branch=master)](https://travis-ci.org/NeonXP/Dotenv)
-[![Coveralls github](https://img.shields.io/coveralls/github/NeonXP/Dotenv.svg)]()
+[![Codecov](https://img.shields.io/codecov/c/github/neonxp/dotenv.svg)](https://codecov.io/gh/NeonXP/Dotenv)
 [![GitHub issues](https://img.shields.io/github/issues/neonxp/dotenv.svg)](https://github.com/neonxp/dotenv/issues)
 [![GitHub forks](https://img.shields.io/github/forks/neonxp/dotenv.svg)](https://github.com/neonxp/dotenv/network)
 [![GitHub stars](https://img.shields.io/github/stars/neonxp/dotenv.svg)](https://github.com/neonxp/dotenv/stargazers)
