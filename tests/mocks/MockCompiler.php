@@ -7,7 +7,6 @@ declare(strict_types=1);
  */
 
 use NeonXP\Dotenv\Compiler\CompilerInterface;
-use NeonXP\Dotenv\Types\KeyValue;
 
 /**
  * Class MockCompiler
@@ -16,7 +15,7 @@ class MockCompiler implements CompilerInterface
 {
 
     /**
-     * @param KeyValue[] $collection
+     * @param array[] $collection
      */
     function setRawCollection(array $collection): void
     {
@@ -24,11 +23,11 @@ class MockCompiler implements CompilerInterface
     }
 
     /**
-     * @param KeyValue $keyValue
-     * @return KeyValue
+     * @param array $array
+     * @return array
      */
-    function compileKeyValue(KeyValue $keyValue): KeyValue
+    function compile(array $array): array
     {
-        return $keyValue;
+        return $array;
     }
 }

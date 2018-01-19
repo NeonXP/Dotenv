@@ -7,7 +7,6 @@ declare(strict_types=1);
  */
 
 use NeonXP\Dotenv\Parser\ParserInterface;
-use NeonXP\Dotenv\Types\KeyValue;
 
 /**
  * Class MockParser
@@ -17,12 +16,12 @@ class MockParser implements ParserInterface
 
     /**
      * @param string $line
-     * @return KeyValue
+     * @return array
      */
-    public function parseLine(string $line): KeyValue
+    public function parseLine(string $line): array
     {
         list($key, $value) = explode("=", $line);
 
-        return new KeyValue($key, $value);
+        return ['key' => $key, 'value' => $value];
     }
 }

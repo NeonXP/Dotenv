@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace NeonXP\Dotenv\Compiler;
 
-use NeonXP\Dotenv\Types\KeyValue;
-
 /**
  * Interface CompilerInterface
  * @package NeonXP\Dotenv\Compiler
@@ -17,13 +15,13 @@ use NeonXP\Dotenv\Types\KeyValue;
 interface CompilerInterface
 {
     /**
-     * @param KeyValue[] $collection
+     * @param array[] $collection
      */
     public function setRawCollection(array $collection): void;
 
     /**
-     * @param KeyValue $keyValue
-     * @return KeyValue
+     * @param array $array
+     * @return array
      */
-    public function compileKeyValue(KeyValue $keyValue): KeyValue;
+    public function compile(array $array): array;
 }

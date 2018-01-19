@@ -5,6 +5,7 @@ declare(strict_types=1);
  * @author: Alexander Kiryukhin <alexander@kiryukhin.su>
  * @license: MIT
  */
+
 use NeonXP\Dotenv\Parser\Parser;
 use PHPUnit\Framework\TestCase;
 
@@ -30,8 +31,8 @@ class ParserTest extends TestCase
 
         foreach ($tests as $test => $expected) {
             $result = $parser->parseLine($test);
-            $this->assertEquals($expected[0], $result->getKey());
-            $this->assertEquals($expected[1], $result->getValue());
+            $this->assertEquals($expected[0], $result['key']);
+            $this->assertEquals($expected[1], $result['value']);
         }
     }
 }

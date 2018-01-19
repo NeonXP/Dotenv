@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace NeonXP\Dotenv\Parser;
 
-use NeonXP\Dotenv\Types\KeyValue;
-
 /**
  * Class Parser
  * @package NeonXP\Dotenv\Parser
@@ -28,7 +26,7 @@ class Parser implements ParserInterface
     const BOOLEAN = '/^(true|false)$/i';
     const NUMBER = '/^(\d+)$/';
 
-    public function parseLine(string $line): KeyValue
+    public function parseLine(string $line): array
     {
         $line = preg_replace(self::REGEX_EXPORT_PREFIX, '', $line);
         list($key, $value) = explode('=', $line, 2) + ['', ''];
@@ -50,6 +48,6 @@ class Parser implements ParserInterface
             $value = intval($value);
         }
 
-        return new KeyValue($key, $value);
+        return ['key' => $key, 'value' => $value];
     }
 }

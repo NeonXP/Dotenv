@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace NeonXP\Dotenv\Parser;
 
-use NeonXP\Dotenv\Types\KeyValue;
-
 /**
  * Interface ParserInterface
  * @package NeonXP\Dotenv\Parser
@@ -18,7 +16,7 @@ interface ParserInterface
 {
     /**
      * @param string $line
-     * @return KeyValue
+     * @return array
      */
-    public function parseLine(string $line): KeyValue;
+    public function parseLine(string $line): array;
 }

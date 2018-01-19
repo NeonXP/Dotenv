@@ -6,7 +6,6 @@ declare(strict_types=1);
  * @license: MIT
  */
 
-use NeonXP\Dotenv\Types\KeyValue;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,16 +28,16 @@ class CompilerTest extends TestCase
             'KEY4' => 'Test VALUE1 VALUE3 => VALUE3',
         ];
         $compiler = new \NeonXP\Dotenv\Compiler\Compiler();
-        $collectionOfKeyValues = [];
+        $collectionOfarrays = [];
         foreach ($collection as $key => $value) {
-            $collectionOfKeyValues[] = new KeyValue($key, $value);
+            $collectionOfarrays[] = ['key' => $key, 'value' => $value];
         }
-        $compiler->setRawCollection($collectionOfKeyValues);
+        $compiler->setRawCollection($collectionOfarrays);
 
         foreach ($tests as $key => $expected) {
-            $result = $compiler->compileKeyValue(new KeyValue($key, $collection[$key]));
-            $this->assertEquals($key, $result->getKey());
-            $this->assertEquals($expected, $result->getValue());
+            $result = $compiler->compile(['key' => $key, 'value' => $collection[$key]]);
+            $this->assertEquals($key, $result['key']);
+            $this->assertEquals($expected, $result['value']);
         }
     }
 }

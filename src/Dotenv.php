@@ -15,7 +15,6 @@ use NeonXP\Dotenv\Loader\FileLoader;
 use NeonXP\Dotenv\Loader\LoaderInterface;
 use NeonXP\Dotenv\Parser\Parser;
 use NeonXP\Dotenv\Parser\ParserInterface;
-use NeonXP\Dotenv\Types\KeyValue;
 
 /**
  * Class Dotenv
@@ -75,9 +74,9 @@ class Dotenv implements \ArrayAccess, \IteratorAggregate
         $rawData = array_map([$this->parser, 'parseLine'], $lines);
         $this->compiler->setRawCollection($rawData);
         $this->loadedValues = array_reduce(
-            array_map([$this->compiler, 'compileKeyValue'], $rawData),
-            function (array $acc, KeyValue $current) {
-                $acc[$current->getKey()] = $current->getValue();
+            array_map([$this->compiler, 'compile'], $rawData),
+            function (array $acc, $current) {
+                $acc[$current['key']] = $current['value'];
                 return $acc;
             },
             []

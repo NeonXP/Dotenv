@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace NeonXP\Dotenv\Compiler;
 
 use NeonXP\Dotenv\Exception\RuntimeException;
-use NeonXP\Dotenv\Types\KeyValue;
 
 /**
  * Class Compiler
@@ -20,61 +19,64 @@ class Compiler implements CompilerInterface
     const REGEX_VARIABLE = '/\$\{(.+?)\}/';
 
     /**
-     * @var KeyValue[]
+     * @var array[]
      */
     protected $collection = [];
 
     /**
-     * @var KeyValue[]
+     * @var array[]
      */
     protected $cache = [];
 
     /**
      * @inheritdoc
-     * @param KeyValue[] $collection
+     * @param array[] $collection
      */
     public function setRawCollection(array $collection): void
     {
         $this->collection = [];
         $this->cache = [];
-        foreach ($collection as $keyValue) {
-            $this->collection[$keyValue->getKey()] = $keyValue;
+        foreach ($collection as $array) {
+            $this->collection[$array['key']] = $array;
         }
     }
 
     /**
      * @inheritdoc
-     * @param KeyValue $keyValue
-     * @return KeyValue
+     * @param array $array
+     * @return array
      */
-    public function compileKeyValue(KeyValue $keyValue): KeyValue
+    public function compile(array $array): array
     {
-        $newValue = preg_replace_callback(self::REGEX_VARIABLE, function ($variable) use ($keyValue) {
+        $newValue = preg_replace_callback(self::REGEX_VARIABLE, function ($variable) use ($array) {
             $variable = $variable[1];
-            if ($variable === $keyValue->getKey()) {
+            if ($variable === $array['key']) {
                 throw new RuntimeException('Self referencing');
             }
             if (isset($this->cache[$variable])) {
-                return $this->cache[$variable]->getValue();
+                return $this->cache[$variable]['value'];
             } elseif (isset($this->collection[$variable]) && !$this->needToCompile($this->collection[$variable])) {
-                return $this->collection[$variable]->getValue();
+                return $this->collection[$variable]['value'];
             } elseif (isset($this->collection[$variable]) && $this->needToCompile($this->collection[$variable])) {
-                return $this->compileKeyValue($this->collection[$variable])->getValue();
+                return $this->compile($this->collection[$variable])['value'];
             }
             return "UNKNOWN VARIABLE {$variable}";
-        }, $keyValue->getValue());
-        $result = new KeyValue($keyValue->getKey(), $newValue);
-        $this->cache[$result->getKey()] = $result;
+        }, $array['value']);
+        $result = [
+            'key' => $array['key'],
+            'value' => $newValue
+        ];
+        $this->cache[$result['key']] = $result;
 
         return $result;
     }
 
     /**
-     * @param KeyValue $keyValue
+     * @param array $array
      * @return bool
      */
-    protected function needToCompile(KeyValue $keyValue): bool
+    protected function needToCompile(array $array): bool
     {
-        return !!preg_match(self::REGEX_VARIABLE, $keyValue->getValue());
+        return !!preg_match(self::REGEX_VARIABLE, $array['value']);
     }
 }

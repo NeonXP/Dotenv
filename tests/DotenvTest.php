@@ -11,7 +11,6 @@ use NeonXP\Dotenv\Dotenv;
 use NeonXP\Dotenv\Exception\RuntimeException;
 use NeonXP\Dotenv\Loader\LoaderInterface;
 use NeonXP\Dotenv\Parser\ParserInterface;
-
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -45,12 +44,8 @@ class DotenvTest extends TestCase
     {
         $dotenv = new Dotenv($this->mockLoader, $this->mockParser, $this->mockCompiler);
 
-        try {
-            $dotenv->get('TEST1');
-            $this->assertTrue(false, 'Dotenv must throws exception if it not loaded');
-        } catch (RuntimeException $exception) {
-            $this->assertTrue(true, 'Dotenv must throws exception if it not loaded');
-        }
+        $this->expectException(RuntimeException::class);
+        $dotenv->get('TEST1');
 
         $dotenv->load();
 
