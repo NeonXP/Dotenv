@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace NeonXP\Dotenv;
 
+use NeonXP\Dotenv\Compiler\Compiler;
 use NeonXP\Dotenv\Compiler\CompilerInterface;
 use NeonXP\Dotenv\Exception\RuntimeException;
 use NeonXP\Dotenv\Loader\FileLoader;
@@ -53,6 +54,9 @@ class Dotenv implements \ArrayAccess, \IteratorAggregate
         }
         if (!$parser) {
             $parser = new Parser(); // Default parser
+        }
+        if (!$compiler) {
+            $compiler = new Compiler(); // Default compiler
         }
 
         $this->loader = $loader;
