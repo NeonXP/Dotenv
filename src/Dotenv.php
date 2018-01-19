@@ -80,6 +80,7 @@ class Dotenv implements \ArrayAccess, \IteratorAggregate
         );
         foreach ($this->loadedValues as $key => $value) {
             $_ENV[$key] = $value;
+            $_SERVER[$key] = $value;
             putenv($key . "=" . $value);
         }
 
