@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @author: Alexander Kiryukhin <alexander@kiryukhin.su>
  * @license: MIT
@@ -8,10 +10,16 @@ namespace NeonXP\Dotenv;
 
 use NeonXP\Dotenv\Compiler\CompilerInterface;
 use NeonXP\Dotenv\Exception\RuntimeException;
+use NeonXP\Dotenv\Loader\FileLoader;
 use NeonXP\Dotenv\Loader\LoaderInterface;
+use NeonXP\Dotenv\Parser\Parser;
 use NeonXP\Dotenv\Parser\ParserInterface;
 use NeonXP\Dotenv\Types\KeyValue;
 
+/**
+ * Class Dotenv
+ * @package NeonXP\Dotenv
+ */
 class Dotenv implements \ArrayAccess, \IteratorAggregate
 {
     /**
@@ -40,6 +48,13 @@ class Dotenv implements \ArrayAccess, \IteratorAggregate
      */
     public function __construct(LoaderInterface $loader = null, ParserInterface $parser = null, CompilerInterface $compiler = null)
     {
+        if (!$loader) {
+            $loader = new FileLoader(); // Default loader
+        }
+        if (!$parser) {
+            $parser = new Parser(); // Default parser
+        }
+
         $this->loader = $loader;
         $this->parser = $parser;
         $this->compiler = $compiler;
@@ -63,6 +78,10 @@ class Dotenv implements \ArrayAccess, \IteratorAggregate
             },
             []
         );
+        foreach ($this->loadedValues as $key => $value) {
+            $_ENV[$key] = $value;
+            putenv($key . "=" . $value);
+        }
 
         return $this;
     }
@@ -85,7 +104,7 @@ class Dotenv implements \ArrayAccess, \IteratorAggregate
      * @return mixed
      * @throws RuntimeException
      */
-    public function get(string $key, mixed $default = null): mixed
+    public function get(string $key, $default = null)
     {
         if (!$this->has($key)) {
             return $default;
@@ -122,7 +141,7 @@ class Dotenv implements \ArrayAccess, \IteratorAggregate
      * @return bool
      * @throws RuntimeException
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
